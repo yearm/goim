@@ -1,0 +1,23 @@
+mysql:
+  addr: localhost:3306
+  dsn: root:123456@tcp(localhost:3306)/goim?readTimeout=2s&writeTimeout=2s&parseTime=true&loc=Local&charset=utf8mb4
+  readDsn: root:123456@tcp(localhost:3306)/goim?readTimeout=2s&writeTimeout=2s&parseTime=true&loc=Local&charset=utf8mb4
+  active: 10
+  idle: 100
+  idleTimeout: 10m
+
+redis:
+  addr: 127.0.0.1:6379
+  pwd: 123456
+  maxRetries: 3
+  poolSize: 12
+  idleTimeout: 5m
+  db: 0
+
+logicHttp:
+  addr: 0.0.0.0:8000
+  pprofAddr : 127.0.0.1:8001
+
+wsHttp:
+  addr: 0.0.0.0:9000
+  pprofAddr : 127.0.0.1:9001

@@ -1,0 +1,15 @@
+syntax = "proto3";
+package pb.ws_conn;
+
+message DeliverMessageReq {
+
+}
+
+message DeliverMessageResp {
+
+}
+
+service WsConn {
+    // 投递消息
+    rpc DeliverMessage (DeliverMessageReq) returns (DeliverMessageResp);
+}
