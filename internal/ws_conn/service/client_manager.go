@@ -1,15 +1,15 @@
 package service
 
-import "sync"
+import "goim/pkg/util/cmap"
 
-var clientManager sync.Map
+var clientManager = cmap.New()
 
 func store(token string, wsConn *WsClient) {
-	clientManager.Store(token, wsConn)
+	clientManager.Set(token, wsConn)
 }
 
 func load(token string) *WsClient {
-	value, ok := clientManager.Load(token)
+	value, ok := clientManager.Get(token)
 	if ok {
 		return value.(*WsClient)
 	}
@@ -17,5 +17,5 @@ func load(token string) *WsClient {
 }
 
 func delete(token string) {
-	clientManager.Delete(token)
+	clientManager.Remove(token)
 }
