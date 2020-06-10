@@ -17,6 +17,5 @@ func (s *Service) Offline(ctx context.Context, in *pb_logic.OfflineReq) (*pb_log
 
 // 发送消息
 func (s *Service) SendMessage(ctx context.Context, in *pb_logic.SendMessageReq) (*pb_logic.SendMessageResp, error) {
-	s.dao.AddMessage()
 	return &pb_logic.SendMessageResp{}, nil
 }

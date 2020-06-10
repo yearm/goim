@@ -5,6 +5,7 @@ import (
 	"github.com/fsnotify/fsnotify"
 	"github.com/spf13/viper"
 	"goim/pkg/cache/redis"
+	"goim/pkg/database/etcd"
 	"goim/pkg/database/mysql"
 	"goim/pkg/net/http/http"
 	"os"
@@ -19,6 +20,7 @@ type Config struct {
 	Redis     *redis.Config `mapstructure:"redis"`
 	LogicHttp *http.Config  `mapstructure:"logicHttp"`
 	WsHttp    *http.Config  `mapstructure:"wsHttp"`
+	Etcd      *etcd.Config  `mapstructure:"etcd"`
 }
 
 func Init() {

@@ -14,10 +14,14 @@ redis:
   idleTimeout: 5m
   db: 0
 
+etcd:
+  hosts: 127.0.0.1:2379
+  dir: /goim
+
 logicHttp:
   addr: 0.0.0.0:8000
-  pprofAddr : 127.0.0.1:8001
+  pprofAddr: 127.0.0.1:8001
 
 wsHttp:
   addr: 0.0.0.0:9000
-  pprofAddr : 127.0.0.1:9001
+  pprofAddr: 127.0.0.1:9001

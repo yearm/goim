@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"github.com/gin-gonic/gin"
 	"goim/conf"
+	"goim/internal/ws_conn/service"
 	"goim/pkg/net/http/middleware"
 	"log"
 	"net/http"
@@ -16,7 +17,7 @@ import (
 )
 
 func Init(c *conf.Config) {
-	// todo service init
+	service.New(c)
 
 	gin.SetMode(gin.ReleaseMode)
 	e := gin.New()

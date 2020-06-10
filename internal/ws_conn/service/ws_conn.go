@@ -6,6 +6,6 @@ import (
 )
 
 // 投递消息
-func (*Service) DeliverMessage(ctx context.Context, in *pb_ws_conn.DeliverMessageReq) (*pb_ws_conn.DeliverMessageResp, error) {
+func (s *Service) DeliverMessage(ctx context.Context, in *pb_ws_conn.DeliverMessageReq) (*pb_ws_conn.DeliverMessageResp, error) {
 	return &pb_ws_conn.DeliverMessageResp{}, nil
 }
