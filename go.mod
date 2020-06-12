@@ -14,6 +14,9 @@ require (
 	github.com/gorilla/websocket v1.4.2
 	github.com/grpc-ecosystem/go-grpc-middleware v1.0.0
 	github.com/json-iterator/go v1.1.9
+	github.com/mailru/easyjson v0.7.1 // indirect
+	github.com/olivere/elastic v6.2.33+incompatible
+	github.com/sirupsen/logrus v1.2.0
 	github.com/spf13/viper v1.7.0
 	go.etcd.io/etcd v3.3.22+incompatible
 	google.golang.org/grpc v1.21.1
