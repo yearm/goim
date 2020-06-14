@@ -6,3 +6,9 @@ type LoggerConfig struct {
 	ElasticHosts []string `mapstructure:"elasticHosts"`
 	Index        string   `mapstructure:"index"`
 }
+
+type Addrs struct {
+	Addr      string `mapstructure:"addr"`
+	PProfAddr string `mapstructure:"pprofAddr"`
+	RpcPort   int    `mapstructure:"rpcPort"`
+}

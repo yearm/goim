@@ -3,6 +3,8 @@ package ws_conn
 import (
 	"github.com/gin-gonic/gin"
 	"github.com/gorilla/websocket"
+	"goim/internal/ws_conn/server"
+	"goim/pkg/logger"
 	"net/http"
 )
 
@@ -12,11 +14,23 @@ var upgrader = websocket.Upgrader{
 	CheckOrigin:     func(r *http.Request) bool { return true },
 }
 
+type connWsReq struct {
+	Token string
+	Agent string
+}
+
 func connWs(ctx *gin.Context) {
-	conn, err := upgrader.Upgrade(ctx.Writer, ctx.Request, nil)
-	if err != nil {
-		//todo err
+	in := new(connWsReq)
+	if err := ctx.Bind(in); err != nil {
 		return
 	}
 
+	conn, err := upgrader.Upgrade(ctx.Writer, ctx.Request, nil)
+	if err != nil {
+		logger.Logger.Error(err)
+		return
+	}
+	client := server.NewWsClient(conn, in.Token, in.Agent)
+	go srv.ReadPump(client)
+	go srv.WritePump(client)
 }

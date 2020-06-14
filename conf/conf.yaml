@@ -21,13 +21,15 @@ etcd:
 logger:
   logLevel: 5
   hookLevel: 2
-#  elasticHosts: 127.0.0.1:9200
+  #  elasticHosts: 127.0.0.1:9200
   index: goim_log
 
-logicHttp:
+logic:
   addr: 0.0.0.0:8000
   pprofAddr: 127.0.0.1:8001
+  rpcPort: 8002
 
-wsHttp:
+wsConn:
   addr: 0.0.0.0:9000
   pprofAddr: 127.0.0.1:9001
+  rpcPort: 9002

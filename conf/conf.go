@@ -7,7 +7,6 @@ import (
 	"goim/pkg/cache/redis"
 	"goim/pkg/database/etcd"
 	"goim/pkg/database/mysql"
-	"goim/pkg/net/http/http"
 	"os"
 )
 
@@ -16,12 +15,12 @@ var (
 )
 
 type Config struct {
-	Mysql     *mysql.Config `mapstructure:"mysql"`
-	Redis     *redis.Config `mapstructure:"redis"`
-	Etcd      *etcd.Config  `mapstructure:"etcd"`
-	LogicHttp *http.Config  `mapstructure:"logicHttp"`
-	WsHttp    *http.Config  `mapstructure:"wsHttp"`
-	Logger    *LoggerConfig `mapstructure:"logger"`
+	Mysql       *mysql.Config `mapstructure:"mysql"`
+	Redis       *redis.Config `mapstructure:"redis"`
+	Etcd        *etcd.Config  `mapstructure:"etcd"`
+	LogicAddrs  *Addrs        `mapstructure:"logic"`
+	WsConnAddrs *Addrs        `mapstructure:"wsConn"`
+	Logger      *LoggerConfig `mapstructure:"logger"`
 }
 
 func Init() {

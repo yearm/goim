@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"github.com/gin-gonic/gin"
 	"goim/conf"
-	"goim/internal/logic/service"
+	"goim/internal/logic/server"
 	"goim/pkg/net/http/middleware"
 	"log"
 	"net/http"
@@ -17,11 +17,11 @@ import (
 )
 
 var (
-	srv *service.Service
+	srv *server.Server
 )
 
 func Init(c *conf.Config) {
-	srv = service.New(c)
+	srv = server.New(c)
 
 	gin.SetMode(gin.ReleaseMode)
 	e := gin.New()
@@ -29,11 +29,11 @@ func Init(c *conf.Config) {
 	e = initRouter(e)
 
 	srv := http.Server{
-		Addr:    conf.Conf.LogicHttp.Addr,
+		Addr:    conf.Conf.LogicAddrs.Addr,
 		Handler: e,
 	}
 	go func() {
-		log.Printf("Listening and serving HTTP on %s\n", conf.Conf.LogicHttp.Addr)
+		log.Printf("Listening and serving HTTP on %s\n", conf.Conf.LogicAddrs.Addr)
 		err := srv.ListenAndServe()
 		if err != nil && err != http.ErrServerClosed {
 			panic(fmt.Errorf("logic.Init() HTTP server error(%v)", err))
@@ -42,8 +42,8 @@ func Init(c *conf.Config) {
 
 	// 开启pprof
 	go func() {
-		log.Printf("Listening and serving pprof HTTP on %s\n", conf.Conf.LogicHttp.PProfAddr)
-		err := http.ListenAndServe(c.LogicHttp.PProfAddr, nil)
+		log.Printf("Listening and serving pprof HTTP on %s\n", conf.Conf.LogicAddrs.PProfAddr)
+		err := http.ListenAndServe(c.LogicAddrs.PProfAddr, nil)
 		if err != nil && err != http.ErrServerClosed {
 			panic(fmt.Errorf("logic.Init() pprof HTTP error(%v)", err))
 		}

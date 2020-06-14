@@ -2,7 +2,8 @@ syntax = "proto3";
 package pb.ws_conn;
 
 message DeliverMessageReq {
-
+    string token = 1;
+    string message = 2;
 }
 
 message DeliverMessageResp {

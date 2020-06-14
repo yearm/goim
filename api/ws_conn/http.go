@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"github.com/gin-gonic/gin"
 	"goim/conf"
-	"goim/internal/ws_conn/service"
+	"goim/internal/ws_conn/server"
 	"goim/pkg/net/http/middleware"
 	"log"
 	"net/http"
@@ -16,8 +16,12 @@ import (
 	"time"
 )
 
+var (
+	srv *server.Server
+)
+
 func Init(c *conf.Config) {
-	service.New(c)
+	srv = server.New(c)
 
 	gin.SetMode(gin.ReleaseMode)
 	e := gin.New()
@@ -25,11 +29,11 @@ func Init(c *conf.Config) {
 	e = initRouter(e)
 
 	srv := http.Server{
-		Addr:    conf.Conf.WsHttp.Addr,
+		Addr:    conf.Conf.WsConnAddrs.Addr,
 		Handler: e,
 	}
 	go func() {
-		log.Printf("Listening and serving HTTP on %s\n", conf.Conf.WsHttp.Addr)
+		log.Printf("Listening and serving HTTP on %s\n", conf.Conf.WsConnAddrs.Addr)
 		err := srv.ListenAndServe()
 		if err != nil && err != http.ErrServerClosed {
 			panic(fmt.Errorf("ws_conn.Init() error(%v)", err))
@@ -38,8 +42,8 @@ func Init(c *conf.Config) {
 
 	// 开启pprof
 	go func() {
-		log.Printf("Listening and serving pprof HTTP on %s\n", conf.Conf.WsHttp.PProfAddr)
-		err := http.ListenAndServe(c.WsHttp.PProfAddr, nil)
+		log.Printf("Listening and serving pprof HTTP on %s\n", conf.Conf.WsConnAddrs.PProfAddr)
+		err := http.ListenAndServe(c.WsConnAddrs.PProfAddr, nil)
 		if err != nil && err != http.ErrServerClosed {
 			panic(fmt.Errorf("ws_conn.Init() pprof HTTP error(%v)", err))
 		}

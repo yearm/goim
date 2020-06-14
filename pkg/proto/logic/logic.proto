@@ -2,12 +2,17 @@ syntax = "proto3";
 package pb.logic;
 
 message SignInReq {
+    string token = 1;
+    string agent = 2;
+    string wsAddr = 3;
 }
 
 message SignInResp {
+    string wsAddr = 1;
 }
 
 message OfflineReq {
+    string token = 1;
 }
 
 message OfflineResp {
