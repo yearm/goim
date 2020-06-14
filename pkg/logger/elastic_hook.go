@@ -13,8 +13,7 @@ type ElasticHookConfig struct {
 	ServerName  string
 	Host        string
 	Index       string
-	Level       logrus.Level
-	MsgCap      int
+	HookLevel   logrus.Level
 }
 
 type elasticHook struct {
@@ -24,7 +23,6 @@ type elasticHook struct {
 	index      string
 	levels     []logrus.Level
 	msgCh      chan *message
-	msgCap     int
 }
 
 type message struct {
@@ -49,7 +47,7 @@ func NewElasticHook(c *ElasticHookConfig) *elasticHook {
 		logrus.DebugLevel,
 		logrus.TraceLevel,
 	} {
-		if l <= c.Level {
+		if l <= c.HookLevel {
 			levels = append(levels, l)
 		}
 	}
@@ -65,12 +63,6 @@ func NewElasticHook(c *ElasticHookConfig) *elasticHook {
 		index:      c.Index,
 		levels:     levels,
 		msgCh:      make(chan *message, 1024),
-		msgCap:     c.MsgCap,
-	}
-
-	// 默认容量100
-	if hook.msgCap == 0 {
-		hook.msgCap = 100
 	}
 
 	go hook.fireFunc()
@@ -97,12 +89,12 @@ func formatMessage(entry *logrus.Entry, hook *elasticHook) *message {
 }
 
 func (hook *elasticHook) fireFunc() {
-	messages := make([]*message, 0, hook.msgCap)
+	messages := make([]*message, 0, 100)
 	t := time.NewTicker(time.Second * 5)
 	for {
 		select {
 		case data := <-hook.msgCh:
-			if len(messages) > hook.msgCap {
+			if len(messages) > 100 {
 				hook.createBulk(messages)
 				messages = messages[:0]
 			}
@@ -118,14 +110,14 @@ func (hook *elasticHook) fireFunc() {
 
 func (hook *elasticHook) createBulk(messages []*message) {
 	begin := time.Now()
-	var msg = make([]interface{}, len(messages))
+	var docs = make([]interface{}, len(messages))
 	for i, v := range messages {
-		msg[i] = v
+		docs[i] = v
 	}
 	index := fmt.Sprintf("%s_%s", hook.index, time.Now().Format("2006-01-02"))
 	bulk := hook.client.Bulk().Index(index).Type("_doc")
-	for _, m := range msg {
-		bulk.Add(elastic.NewBulkIndexRequest().Doc(m))
+	for _, doc := range docs {
+		bulk.Add(elastic.NewBulkIndexRequest().Doc(doc))
 	}
 
 	res, err := bulk.Do(context.TODO())
@@ -136,8 +128,8 @@ func (hook *elasticHook) createBulk(messages []*message) {
 		Logger.Error("bulk commit failed")
 	}
 	dur := time.Since(begin).Seconds()
-	pps := int64(float64(len(msg)) / dur)
-	Logger.Info("%-30s %10d | %10d req/s | %02d:%02d\n", "Insert Error Log Data To ES", len(msg), pps, dur/60, int(dur)%60)
+	pps := int64(float64(len(docs)) / dur)
+	Logger.Info("%-30s %10d | %10d req/s | %02d:%02d\n", "Insert Error Log Data To ES", len(docs), pps, dur/60, int(dur)%60)
 }
 
 // 实现hook接口

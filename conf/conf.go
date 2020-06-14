@@ -18,9 +18,10 @@ var (
 type Config struct {
 	Mysql     *mysql.Config `mapstructure:"mysql"`
 	Redis     *redis.Config `mapstructure:"redis"`
+	Etcd      *etcd.Config  `mapstructure:"etcd"`
 	LogicHttp *http.Config  `mapstructure:"logicHttp"`
 	WsHttp    *http.Config  `mapstructure:"wsHttp"`
-	Etcd      *etcd.Config  `mapstructure:"etcd"`
+	Logger    *LoggerConfig `mapstructure:"logger"`
 }
 
 func Init() {

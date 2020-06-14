@@ -18,6 +18,12 @@ etcd:
   hosts: 127.0.0.1:2379
   dir: /goim
 
+logger:
+  logLevel: 5
+  hookLevel: 2
+#  elasticHosts: 127.0.0.1:9200
+  index: goim_log
+
 logicHttp:
   addr: 0.0.0.0:8000
   pprofAddr: 127.0.0.1:8001
