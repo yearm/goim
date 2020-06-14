@@ -3,7 +3,7 @@ package ws_conn
 import (
 	"github.com/gin-gonic/gin"
 	"github.com/gorilla/websocket"
-	"goim/internal/ws_conn/server"
+	"goim/internal/ws_conn/service"
 	"goim/pkg/logger"
 	"net/http"
 )
@@ -30,7 +30,7 @@ func connWs(ctx *gin.Context) {
 		logger.Logger.Error(err)
 		return
 	}
-	client := server.NewWsClient(conn, in.Token, in.Agent)
+	client := service.NewWsClient(conn, in.Token, in.Agent)
 	go srv.ReadPump(client)
 	go srv.WritePump(client)
 }

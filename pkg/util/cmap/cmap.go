@@ -13,7 +13,7 @@ type ConcurrentMap []*ConcurrentMapShared
 
 // A "thread" safe string to anything map.
 type ConcurrentMapShared struct {
-	items map[string]interface{}
+	items        map[string]interface{}
 	sync.RWMutex // Read Write mutex, guards access to internal map.
 }
 

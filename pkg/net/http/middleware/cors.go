@@ -16,3 +16,9 @@ func CORS() gin.HandlerFunc {
 		MaxAge:           12 * time.Hour,
 	})
 }
+
+func Authorization() gin.HandlerFunc {
+	return func(context *gin.Context) {
+		// TODO Authorization
+	}
+}

@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"github.com/gin-gonic/gin"
 	"goim/conf"
-	"goim/internal/ws_conn/server"
+	"goim/internal/ws_conn/service"
 	"goim/pkg/net/http/middleware"
 	"log"
 	"net/http"
@@ -17,11 +17,11 @@ import (
 )
 
 var (
-	srv *server.Server
+	srv *service.Service
 )
 
 func Init(c *conf.Config) {
-	srv = server.New(c)
+	srv = service.New(c)
 
 	gin.SetMode(gin.ReleaseMode)
 	e := gin.New()
@@ -63,7 +63,7 @@ func Init(c *conf.Config) {
 func initRouter(e *gin.Engine) *gin.Engine {
 	g := e.Group("/v1")
 	{
-		g.GET("/ws", connWs)
+		g.GET("/ws", middleware.Authorization(), connWs)
 	}
 
 	return e
