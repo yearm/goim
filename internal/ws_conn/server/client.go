@@ -21,8 +21,12 @@ func NewWsClient(conn *websocket.Conn, token string, agent string) *WsClient {
 	}
 }
 
+func (w *WsClient) PushMessage(msg []byte) {
+	w.broadcast <- msg
+}
+
 func (w *WsClient) HandlePackage(msg []byte) {
 	if len(msg) == 1 && stringi.Bytes2str(msg) == "0" {
-		w.broadcast <- msg
+		w.PushMessage(msg)
 	}
 }

@@ -111,7 +111,7 @@ func (s *Server) WritePump(c *WsClient) {
 				return
 			}
 
-			logger.Logger.Infof("message write body:%s", message)
+			//logger.Logger.Infof("message write body:%s", message)
 			w.Write(message)
 			if err := w.Close(); err != nil {
 				return
